@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Resume Builder - Login/Register</title>
+    <title>Resume Builder - Login</title>
 
     <!-- Import Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
@@ -25,66 +25,15 @@
             height: 100vh;
         }
 
-        .main-container {
-            display: flex;
-            width: 800px;
+        .container {
+            max-width: 400px;
             background-color: #fff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
         }
 
-        .main-container > div {
-            width: 50%;
-            padding: 20px;
-        }
-
-        .premium-plans {
-            background-color: #f1f1f1;
-            padding: 20px;
-            border-radius: 10px;
-            margin-right: 10px;
-        }
-
-        .premium-plans h3 {
-            color: #4CAF50;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .plan {
-            margin-bottom: 15px;
-            padding: 15px;
-            background-color: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            text-align: center;
-        }
-
-        .plan h4 {
-            margin-bottom: 10px;
-            color: #333;
-        }
-
-        .plan button {
-            padding: 10px 15px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        .plan button:hover {
-            background-color: #0056b3;
-        }
-
-        .auth-section {
-            margin-left: 10px;
-        }
-
-        .auth-section h2 {
+        h2 {
             text-align: center;
             margin-bottom: 20px;
             color: #333;
@@ -142,80 +91,33 @@
             font-size: 14px;
             color: #777;
         }
-
-        /* Responsive Design */
-        @media (max-width: 800px) {
-            .main-container {
-                flex-direction: column;
-                width: 100%;
-                height: auto;
-            }
-
-            .premium-plans {
-                margin-right: 0;
-                margin-bottom: 20px;
-            }
-
-            .auth-section {
-                margin-left: 0;
-            }
-        }
     </style>
 </head>
 
 <body>
-    <div class="main-container">
-        <!-- Premium Plan Section -->
-        <div class="premium-plans">
-            <h3>Choose Your Premium Plan</h3>
+    <div class="container">
+        <h2>Login</h2>
 
-            <!-- Plan for 2 Resume Downloads -->
-            <div class="plan">
-                <h4>2 Resume Downloads</h4>
-                <p>$4.99</p>
-                <button onclick="purchasePlan(2)">Buy Now</button>
-            </div>
+        <!-- Login Form -->
+        <form id="login-form">
+            <input type="email" id="login-email" placeholder="Email" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            <button type="submit">Login</button>
+        </form>
 
-            <!-- Plan for 5 Resume Downloads -->
-            <div class="plan">
-                <h4>5 Resume Downloads</h4>
-                <p>$9.99</p>
-                <button onclick="purchasePlan(5)">Buy Now</button>
-            </div>
-        </div>
+        <!-- Link to Registration Page -->
+        <p class="toggle-link" id="toggle-register">
+            Don't have an account? <a href="registration.html">Register here</a>
+        </p>
 
-        <!-- Login/Register Section -->
-        <div class="auth-section">
-            <h2 id="form-title">Login</h2>
-
-            <!-- Login Form -->
-            <form id="login-form" style="display: block;">
-                <input type="email" id="login-email" placeholder="Email" required>
-                <input type="password" id="login-password" placeholder="Password" required>
-                <button type="submit">Login</button>
-            </form>
-
-            <!-- Register Form -->
-            <form id="register-form" style="display: none;">
-                <input type="email" id="register-email" placeholder="Email" required>
-                <input type="password" id="register-password" placeholder="Password" required>
-                <button type="submit">Register</button>
-            </form>
-
-            <!-- Toggle between login and register -->
-            <p class="toggle-link" id="toggle-auth">Don't have an account? Register</p>
-
-            <!-- Footer Section -->
-            <div class="footer">
-                <p>&copy; 2024 Resume Builder. All Rights Reserved.</p>
-            </div>
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>&copy; 2024 Resume Builder. All Rights Reserved.</p>
         </div>
     </div>
 
     <!-- Firebase App (the core Firebase SDK) -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-
-    <!-- Firebase Authentication -->
     <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js"></script>
 
     <script>
@@ -234,53 +136,14 @@
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        // Toggle between login and register forms
-        const toggleLink = document.getElementById('toggle-auth');
-        const loginForm = document.getElementById('login-form');
-        const registerForm = document.getElementById('register-form');
-        const formTitle = document.getElementById('form-title');
-
-        toggleLink.addEventListener('click', () => {
-            // Check if login form is currently visible, and toggle between forms
-            if (loginForm.style.display === "none") {
-                loginForm.style.display = "block";
-                registerForm.style.display = "none";
-                formTitle.innerText = "Login";
-                toggleLink.innerText = "Don't have an account? Register";
-            } else {
-                loginForm.style.display = "none";
-                registerForm.style.display = "block";
-                formTitle.innerText = "Register";
-                toggleLink.innerText = "Already have an account? Login";
-            }
-        });
-
-        // Registration Functionality
-        registerForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const email = document.getElementById('register-email').value;
-            const password = document.getElementById('register-password').value;
-
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((userCredential) => {
-                    const user = userCredential.user;
-                    alert("Registration successful! Redirecting to dashboard...");
-                    window.location.href = "resume-dashboard.html"; // Redirect to dashboard page
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        });
-
-        // Login Functionality
-        loginForm.addEventListener('submit', (e) => {
+        // Login functionality
+        document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
             const password = document.getElementById('login-password').value;
 
             auth.signInWithEmailAndPassword(email, password)
                 .then((userCredential) => {
-                    const user = userCredential.user;
                     alert("Login successful! Redirecting to dashboard...");
                     window.location.href = "resume-dashboard.html"; // Redirect to dashboard page
                 })
@@ -288,17 +151,6 @@
                     alert(error.message);
                 });
         });
-
-        // Purchase Premium Plan Functionality (dummy example)
-        function purchasePlan(plan) {
-            if (plan === 2) {
-                alert("You have selected the 2 Resume Downloads plan. Redirecting to payment...");
-                // Redirect to payment gateway or handle premium activation here
-            } else if (plan === 5) {
-                alert("You have selected the 5 Resume Downloads plan. Redirecting to payment...");
-                // Redirect to payment gateway or handle premium activation here
-            }
-        }
     </script>
 </body>
 
