@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Dashboard</title>
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f9fc;
+            padding: 50px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        button {
+            padding: 15px 20px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input[type="file"] {
+            margin: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Welcome to Your Resume Dashboard</h2>
+        <p>You can either upload an existing resume or create a new one from scratch.</p>
+
+        <!-- Option to upload an existing resume -->
+        <input type="file" id="resume-upload" accept=".pdf,.doc,.docx">
+        <br>
+
+        <!-- Option to create a new resume -->
+        <button onclick="startNewResume()">Create New Resume</button>
+    </div>
+
+    <script>
+        // Function to handle starting a new resume
+        function startNewResume() {
+            alert("Redirecting to the resume builder...");
+            window.location.href = "resume-builder.html"; // Redirect to a page for building a new resume
+        }
+
+        // Handle resume upload (simple demo)
+        document.getElementById('resume-upload').addEventListener('change', function () {
+            alert('Resume uploaded successfully!');
+        });
+    </script>
+</body>
+
+</html>
