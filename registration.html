@@ -123,7 +123,6 @@
                 <option value="+1">+1 (United States)</option>
                 <option value="+91">+91 (India)</option>
                 <option value="+44">+44 (United Kingdom)</option>
-                <!-- Add more country codes as needed -->
             </select>
 
             <input type="tel" id="phone-number" placeholder="Phone Number" required>
@@ -146,54 +145,57 @@
         </div>
     </div>
 
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js"></script>
+    <!-- Firebase SDK -->
+    <script type="module">
+      // Import Firebase modules
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+      import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
-    <script>
-        const firebaseConfig = {
-            apiKey: "YOUR_FIREBASE_API_KEY",
-            authDomain: "YOUR_FIREBASE_AUTH_DOMAIN",
-            projectId: "YOUR_FIREBASE_PROJECT_ID",
-            storageBucket: "YOUR_FIREBASE_STORAGE_BUCKET",
-            messagingSenderId: "YOUR_FIREBASE_MESSAGING_SENDER_ID",
-            appId: "YOUR_FIREBASE_APP_ID"
-        };
+      // Your web app's Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAzl-a7lidS9_qxiMpJ1971sO4HyoLMz9w",
+        authDomain: "resumebuilderauth-e82b4.firebaseapp.com",
+        projectId: "resumebuilderauth-e82b4",
+        storageBucket: "resumebuilderauth-e82b4.appspot.com",
+        messagingSenderId: "824380788600",
+        appId: "1:824380788600:web:f6abacfed4f56b41cdc28d",
+        measurementId: "G-X4FDGRSX8Q"
+      };
 
-        // Initialize Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
 
-        // Handle Registration
-        document.getElementById('register-form').addEventListener('submit', (e) => {
-            e.preventDefault();
+      // Handle Registration
+      document.getElementById('register-form').addEventListener('submit', (e) => {
+        e.preventDefault();
 
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const confirmPassword = document.getElementById('confirm-password').value;
-            const errorMessage = document.getElementById('error-message');
-            const successMessage = document.getElementById('success-message');
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
 
-            // Clear any previous messages
-            errorMessage.textContent = '';
-            successMessage.textContent = '';
+        // Clear previous messages
+        errorMessage.textContent = '';
+        successMessage.textContent = '';
 
-            // Check if passwords match
-            if (password !== confirmPassword) {
-                errorMessage.textContent = "Passwords do not match!";
-                return;
-            }
+        // Check if passwords match
+        if (password !== confirmPassword) {
+          errorMessage.textContent = "Passwords do not match!";
+          return;
+        }
 
-            // Register with Firebase
-            auth.createUserWithEmailAndPassword(email, password)
-                .then(() => {
-                    successMessage.textContent = "Registration successful!";
-                    window.location.href = "resume-dashboard.html"; // Redirect to dashboard
-                })
-                .catch((error) => {
-                    errorMessage.textContent = "Registration failed: " + error.message;
-                });
-        });
+        // Register with Firebase
+        createUserWithEmailAndPassword(auth, email, password)
+          .then(() => {
+            successMessage.textContent = "Registration successful!";
+            window.location.href = "resume-dashboard.html"; // Redirect to dashboard
+          })
+          .catch((error) => {
+            errorMessage.textContent = "Registration failed: " + error.message;
+          });
+      });
     </script>
 </body>
 
