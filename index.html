@@ -73,6 +73,21 @@
             background-color: #45a049;
         }
 
+        .google-btn {
+            background-color: #db4437;
+            color: white;
+            font-size: 16px;
+            padding: 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .google-btn:hover {
+            background-color: #c23321;
+        }
+
         .toggle-link {
             text-align: center;
             margin-top: 15px;
@@ -105,6 +120,9 @@
             <button type="submit">Login</button>
         </form>
 
+        <!-- Google Login Button -->
+        <button class="google-btn" id="google-login">Login with Google</button>
+
         <!-- Link to Registration Page -->
         <p class="toggle-link" id="toggle-register">
             Don't have an account? <a href="registration.html">Register here</a>
@@ -136,7 +154,7 @@
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        // Login functionality
+        // Email/Password Login Functionality
         document.getElementById('login-form').addEventListener('submit', (e) => {
             e.preventDefault();
             const email = document.getElementById('login-email').value;
@@ -149,6 +167,21 @@
                 })
                 .catch((error) => {
                     alert(error.message);
+                });
+        });
+
+        // Google Login Functionality
+        document.getElementById('google-login').addEventListener('click', () => {
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            auth.signInWithPopup(provider)
+                .then((result) => {
+                    const user = result.user;
+                    alert("Google login successful! Redirecting to dashboard...");
+                    window.location.href = "resume-dashboard.html"; // Redirect to dashboard page
+                })
+                .catch((error) => {
+                    alert("Error: " + error.message);
                 });
         });
     </script>
