@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,10 +11,12 @@
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
             font-family: 'Roboto', sans-serif;
             background-color: #f7f9fc;
         }
+
         header {
             background-color: #4CAF50;
             color: white;
@@ -21,15 +24,18 @@
             text-align: center;
             font-size: 24px;
         }
+
         .container {
             display: flex;
             margin: 20px;
         }
+
         .sidebar {
             width: 250px;
             background-color: #f0f0f0;
             padding: 20px;
         }
+
         .sidebar a {
             display: block;
             padding: 10px;
@@ -39,9 +45,11 @@
             background-color: #ddd;
             border-radius: 5px;
         }
+
         .sidebar a:hover {
             background-color: #ccc;
         }
+
         .content {
             flex: 1;
             padding: 20px;
@@ -49,6 +57,7 @@
             border-radius: 5px;
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
+
         .button {
             padding: 15px;
             background-color: #4CAF50;
@@ -58,15 +67,17 @@
             cursor: pointer;
             font-size: 16px;
         }
+
         .button:hover {
             background-color: #45a049;
         }
     </style>
 </head>
+
 <body>
 
-<header>
-    Welcome, [User Name]
+<header id="dashboard-header">
+    Welcome, <span id="user-name">[User Name]</span>
     <button class="button" style="float: right; margin-top: -10px;">Logout</button>
 </header>
 
@@ -80,50 +91,41 @@
     </div>
 
     <div class="content" id="dashboardContent">
-        <!-- Dynamic content will be loaded here based on user actions -->
         <h2>Dashboard</h2>
         <p>Select an option from the sidebar to get started.</p>
     </div>
 </div>
 
-<script>
-    // Handle dynamic content loading based on user clicks
-    document.getElementById('createResume').addEventListener('click', function () {
-        document.getElementById('dashboardContent').innerHTML = `
-            <h2>Create New Resume</h2>
-            <p>Start creating your resume by filling out the form below:</p>
-            <!-- Add your resume creation form here -->
-        `;
-    });
+<!-- Firebase SDK -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 
-    document.getElementById('myResumes').addEventListener('click', function () {
-        document.getElementById('dashboardContent').innerHTML = `
-            <h2>My Resumes</h2>
-            <p>Here are the resumes you have created:</p>
-            <!-- Display a list of resumes with options to edit or delete -->
-        `;
-    });
+  // Your Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyAzl-a7lidS9_qxiMpJ1971sO4HyoLMz9w",
+    authDomain: "resumebuilderauth-e82b4.firebaseapp.com",
+    projectId: "resumebuilderauth-e82b4",
+    storageBucket: "resumebuilderauth-e82b4.appspot.com",
+    messagingSenderId: "824380788600",
+    appId: "1:824380788600:web:f6abacfed4f56b41cdc28d",
+    measurementId: "G-X4FDGRSX8Q"
+  };
 
-    document.getElementById('profile').addEventListener('click', function () {
-        document.getElementById('dashboardContent').innerHTML = `
-            <h2>Profile</h2>
-            <p>Manage your personal information and account settings here:</p>
-            <!-- Add profile management form -->
-        `;
-    });
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
 
-    document.getElementById('premium').addEventListener('click', function () {
-        document.getElementById('dashboardContent').innerHTML = `
-            <h2>Premium Features</h2>
-            <p>Upgrade to access more resume templates and features.</p>
-            <!-- Add premium feature details here -->
-        `;
-    });
-
-    document.getElementById('logout').addEventListener('click', function () {
-        // Handle logout functionality here
-        alert("Logging out...");
-    });
+  // Display the user's name or email
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      const displayName = user.displayName || user.email;
+      document.getElementById('user-name').textContent = displayName;
+    } else {
+      // User is not signed in, redirect to login page
+      window.location.href = "index.html";
+    }
+  });
 </script>
 
 </body>
