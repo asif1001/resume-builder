@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - Profile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f9fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+        }
+
+        button {
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            box-shadow: 0 5px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .success {
+            color: green;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .back-to-dashboard {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #007BFF;
+        }
+
+        .back-to-dashboard a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-to-dashboard a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Profile</h2>
+
+        <!-- Profile Form -->
+        <form id="profile-form">
+            <input type="text" id="first-name" placeholder="First Name" required>
+            <input type="text" id="last-name" placeholder="Last Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+
+            <div class="error" id="error-message"></div>
+            <div class="success" id="success-message"></div>
+
+            <button type="submit">Update Profile</button>
+        </form>
+
+        <!-- Link to Dashboard Page -->
+        <p class="back-to-dashboard">
+            Go back to <a href="resume-dashboard.html">Dashboard</a>
+        </p>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+      import { getAuth, onAuthStateChanged, updateProfile, updateEmail } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+      // Your Firebase configuration
+      const firebaseConfig = {
+        apiKey: "AIzaSyAzl-a7lidS9_qxiMpJ1971sO4HyoLMz9w",
+        authDomain: "resumebuilderauth-e82b4.firebaseapp.com",
+        projectId: "resumebuilderauth-e82b4",
+        storageBucket: "resumebuilderauth-e82b4.appspot.com",
+        messagingSenderId: "824380788600",
+        appId: "1:824380788600:web:f6abacfed4f56b41cdc28d",
+        measurementId: "G-X4FDGRSX8Q"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      // Populate the form with the user's current info
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // Pre-fill the form fields with user's current info
+          document.getElementById('first-name').value = user.displayName ? user.displayName.split(' ')[0] : '';
+          document.getElementById('last-name').value = user.displayName ? user.displayName.split(' ')[1] : '';
+          document.getElementById('email').value = user.email;
+        } else {
+          // User is not logged in, redirect to login page
+          window.location.href = "index.html";
+        }
+      });
+
+      // Handle Profile Update
+      document.getElementById('profile-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const firstName = document.getElementById('first-name').value;
+        const lastName = document.getElementById('last-name').value;
+        const email = document.getElementById('email').value;
+        const errorMessage = document.getElementById('error-message');
+        const successMessage = document.getElementById('success-message');
+        const user = auth.currentUser;
+
+        // Clear previous messages
+        errorMessage.textContent = '';
+        successMessage.textContent = '';
+
+        if (user) {
+          // Update profile (first and last name)
+          updateProfile(user, {
+            displayName: `${firstName} ${lastName}`
+          }).then(() => {
+            // Update email if necessary
+            updateEmail(user, email).then(() => {
+              successMessage.textContent = "Profile updated successfully!";
+            }).catch((error) => {
+              errorMessage.textContent = "Error updating email: " + error.message;
+            });
+          }).catch((error) => {
+            errorMessage.textContent = "Error updating profile: " + error.message;
+          });
+        }
+      });
+    </script>
+</body>
+
+</html>
