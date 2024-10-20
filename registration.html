@@ -5,10 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resume Builder - Registration</title>
-
-    <!-- Import Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-
     <style>
         * {
             margin: 0;
@@ -44,7 +40,7 @@
             flex-direction: column;
         }
 
-        input {
+        input, select {
             margin-bottom: 20px;
             padding: 15px;
             border: 1px solid #ddd;
@@ -54,7 +50,7 @@
             transition: all 0.3s ease;
         }
 
-        input:focus {
+        input:focus, select:focus {
             border-color: #4CAF50;
         }
 
@@ -71,21 +67,6 @@
 
         button:hover {
             background-color: #45a049;
-        }
-
-        .google-btn {
-            background-color: #db4437;
-            color: white;
-            font-size: 16px;
-            padding: 15px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        .google-btn:hover {
-            background-color: #c23321;
         }
 
         .footer {
@@ -122,12 +103,23 @@
             <input type="text" id="first-name" placeholder="First Name" required>
             <input type="text" id="last-name" placeholder="Last Name" required>
             <input type="email" id="email" placeholder="Email" required>
+
+            <!-- Country Code Dropdown and Phone Number -->
+            <label for="country-code">Country Code:</label>
+            <select id="country-code" required>
+                <option value="+1">+1 (USA)</option>
+                <option value="+44">+44 (UK)</option>
+                <option value="+91">+91 (India)</option>
+                <option value="+61">+61 (Australia)</option>
+                <option value="+81">+81 (Japan)</option>
+                <!-- Add more country codes as needed -->
+            </select>
+
+            <input type="tel" id="phone-number" placeholder="Phone Number" required>
+
             <input type="password" id="password" placeholder="Password" required>
             <button type="submit">Register</button>
         </form>
-
-        <!-- Google Register Button -->
-        <button class="google-btn" id="google-register">Register with Google</button>
 
         <!-- Link to Login Page -->
         <p class="back-to-login">
@@ -160,35 +152,26 @@
         const app = firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth();
 
-        // Email/Password Registration Functionality
+        // Registration Functionality
         document.getElementById('register-form').addEventListener('submit', (e) => {
             e.preventDefault();
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
             const email = document.getElementById('email').value;
+            const countryCode = document.getElementById('country-code').value;
+            const phoneNumber = document.getElementById('phone-number').value;
+            const fullPhoneNumber = `${countryCode}${phoneNumber}`; // Combine country code and phone number
             const password = document.getElementById('password').value;
 
+            // Firebase Registration
             auth.createUserWithEmailAndPassword(email, password)
                 .then((userCredential) => {
                     const user = userCredential.user;
-                    alert("Registration successful! Redirecting to dashboard...");
-                    window.location.href = "resume-dashboard.html"; // Redirect to dashboard page
+                    alert("Registration successful! Phone number: " + fullPhoneNumber);
+                    window.location.href = "resume-dashboard.html"; // Redirect to dashboard
                 })
                 .catch((error) => {
-                    alert(error.message);
-                });
-        });
-
-        // Google Register Functionality
-        document.getElementById('google-register').addEventListener('click', () => {
-            const provider = new firebase.auth.GoogleAuthProvider();
-
-            auth.signInWithPopup(provider)
-                .then((result) => {
-                    const user = result.user;
-                    alert("Google registration successful! Redirecting to dashboard...");
-                    window.location.href = "resume-dashboard.html"; // Redirect to dashboard page
-                })
-                .catch((error) => {
-                    alert("Error: " + error.message);
+                    alert("Registration failed: " + error.message);
                 });
         });
     </script>
