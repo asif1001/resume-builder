@@ -116,7 +116,7 @@
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
-  // Display the user's name or email
+  // Display the user's full name
   onAuthStateChanged(auth, (user) => {
     if (user) {
       const displayName = user.displayName || user.email;
@@ -129,4 +129,5 @@
 </script>
 
 </body>
+
 </html>
