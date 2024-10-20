@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - Create New Resume</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f9fc;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 24px;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 20px;
+        }
+
+        .template-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+            width: 300px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .template-card img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .color-options {
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .color-options div {
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            margin: 0 5px;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+
+        .color-options div:hover {
+            border: 2px solid #000;
+        }
+
+        .color-preview {
+            width: 100px;
+            height: 10px;
+            margin-top: 15px;
+            border-radius: 5px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 15px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    Choose Your Resume Layout
+</header>
+
+<div class="container">
+    <!-- Template 1 -->
+    <div class="template-card" data-template="1">
+        <h3>Professional Layout 1</h3>
+        <img src="template1-preview.jpg" alt="Resume Template 1">
+        <div class="color-options">
+            <div class="color" style="background-color: #4CAF50;" data-color="#4CAF50"></div>
+            <div class="color" style="background-color: #FF5722;" data-color="#FF5722"></div>
+            <div class="color" style="background-color: #2196F3;" data-color="#2196F3"></div>
+        </div>
+        <div class="color-preview" id="color-preview-1"></div>
+        <button class="button" onclick="selectTemplate(1)">Select Layout 1</button>
+    </div>
+
+    <!-- Template 2 -->
+    <div class="template-card" data-template="2">
+        <h3>Creative Layout 2</h3>
+        <img src="template2-preview.jpg" alt="Resume Template 2">
+        <div class="color-options">
+            <div class="color" style="background-color: #673AB7;" data-color="#673AB7"></div>
+            <div class="color" style="background-color: #FFC107;" data-color="#FFC107"></div>
+            <div class="color" style="background-color: #009688;" data-color="#009688"></div>
+        </div>
+        <div class="color-preview" id="color-preview-2"></div>
+        <button class="button" onclick="selectTemplate(2)">Select Layout 2</button>
+    </div>
+
+    <!-- Template 3 -->
+    <div class="template-card" data-template="3">
+        <h3>Modern Layout 3</h3>
+        <img src="template3-preview.jpg" alt="Resume Template 3">
+        <div class="color-options">
+            <div class="color" style="background-color: #3F51B5;" data-color="#3F51B5"></div>
+            <div class="color" style="background-color: #F44336;" data-color="#F44336"></div>
+            <div class="color" style="background-color: #009688;" data-color="#009688"></div>
+        </div>
+        <div class="color-preview" id="color-preview-3"></div>
+        <button class="button" onclick="selectTemplate(3)">Select Layout 3</button>
+    </div>
+</div>
+
+<!-- Script for handling color selection and layout -->
+<script>
+    // Handle color selection
+    document.querySelectorAll('.color').forEach(colorOption => {
+        colorOption.addEventListener('click', function () {
+            const templateId = this.closest('.template-card').dataset.template;
+            const selectedColor = this.dataset.color;
+            document.getElementById(`color-preview-${templateId}`).style.backgroundColor = selectedColor;
+        });
+    });
+
+    // Function to select a resume layout
+    function selectTemplate(templateId) {
+        const selectedColor = document.getElementById(`color-preview-${templateId}`).style.backgroundColor || '#FFFFFF';
+        alert(`Layout ${templateId} selected with color ${selectedColor}`);
+        // Proceed to the resume creation form with the selected layout and color
+        window.location.href = `create-resume-form.html?layout=${templateId}&color=${selectedColor}`;
+    }
+</script>
+
+</body>
+
+</html>
