@@ -158,6 +158,7 @@
         e.preventDefault();
         const email = document.getElementById('login-email').value;
         const password = document.getElementById('login-password').value;
+        const errorMessage = document.getElementById('error');
 
         signInWithEmailAndPassword(auth, email, password)
           .then(() => {
@@ -165,7 +166,12 @@
             window.location.href = "resume-dashboard.html"; // Redirect to dashboard
           })
           .catch((error) => {
-            document.getElementById('error').textContent = "Login failed: " + error.message;
+            // Check for "user not found" error
+            if (error.code === 'auth/user-not-found') {
+              errorMessage.textContent = "Email not registered, please register.";
+            } else {
+              errorMessage.textContent = "Login failed: " + error.message;
+            }
           });
       });
     </script>
