@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resume Builder - Registration</title>
+
+    <!-- Import Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f7f9fc;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #4CAF50;
+        }
+
+        button {
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .footer {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Register</h2>
+
+        <!-- Registration Form -->
+        <form id="register-form">
+            <input type="text" id="first-name" placeholder="First Name" required>
+            <input type="text" id="last-name" placeholder="Last Name" required>
+            <input type="email" id="email" placeholder="Email" required>
+            <input type="tel" id="phone" placeholder="Phone (with country code)" required>
+            <input type="text" id="billing-address" placeholder="Billing Address" required>
+            <input type="text" id="city" placeholder="City" required>
+            <input type="text" id="state" placeholder="State" required>
+            <input type="text" id="postal-code" placeholder="Postal Code" required>
+            <button type="submit">Register</button>
+        </form>
+
+        <!-- Footer Section -->
+        <div class="footer">
+            <p>&copy; 2024 Resume Builder. All Rights Reserved.</p>
+        </div>
+    </div>
+
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.1.0/firebase-auth.js"></script>
+
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAzl-a7lidS9_qxiMpJ1971sO4HyoLMz9w",
+            authDomain: "resumebuilderauth-e82b4.firebaseapp.com",
+            projectId: "resumebuilderauth-e82b4",
+            storageBucket: "resumebuilderauth-e82b4.appspot.com",
+            messagingSenderId: "824380788600",
+            appId: "1:824380788600:web:f6abacfed4f56b41cdc28d",
+            measurementId: "G-X4FDGRSX8Q"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Registration functionality
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const firstName = document.getElementById('first-name').value;
+            const lastName = document.getElementById('last-name').value;
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
+            const billingAddress = document.getElementById('billing-address').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const postalCode = document.getElementById('postal-code').value;
+
+            // Firebase Authentication - You can save the additional data in Firebase Database
+            auth.createUserWithEmailAndPassword(email, "SomePassword123")  // Replace with a real password field in a real project
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    alert("Registration successful! Redirecting to dashboard...");
+                    window.location.href = "resume-dashboard.html"; // Redirect to dashboard page
+                })
+                .catch((error) => {
+                    alert(error.message);
+                });
+        });
+    </script>
+</body>
+
+</html>
